@@ -1,0 +1,48 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IoTSensorReaderApp", "IoTSensorReaderApp\IoTSensorReaderApp.csproj", "{395F2409-F8F7-4141-89E6-7AF10C499FFE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IoTSensorReaderApp.Tests", "IoTSensorReaderApp.Tests\IoTSensorReaderApp.Tests.csproj", "{B4063850-BEA1-4086-AC73-DCDB779F168B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{395F2409-F8F7-4141-89E6-7AF10C499FFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{395F2409-F8F7-4141-89E6-7AF10C499FFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{395F2409-F8F7-4141-89E6-7AF10C499FFE}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{395F2409-F8F7-4141-89E6-7AF10C499FFE}.Debug|x64.Build.0 = Debug|Any CPU
+		{395F2409-F8F7-4141-89E6-7AF10C499FFE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{395F2409-F8F7-4141-89E6-7AF10C499FFE}.Debug|x86.Build.0 = Debug|Any CPU
+		{395F2409-F8F7-4141-89E6-7AF10C499FFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{395F2409-F8F7-4141-89E6-7AF10C499FFE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{395F2409-F8F7-4141-89E6-7AF10C499FFE}.Release|x64.ActiveCfg = Release|Any CPU
+		{395F2409-F8F7-4141-89E6-7AF10C499FFE}.Release|x64.Build.0 = Release|Any CPU
+		{395F2409-F8F7-4141-89E6-7AF10C499FFE}.Release|x86.ActiveCfg = Release|Any CPU
+		{395F2409-F8F7-4141-89E6-7AF10C499FFE}.Release|x86.Build.0 = Release|Any CPU
+		{B4063850-BEA1-4086-AC73-DCDB779F168B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4063850-BEA1-4086-AC73-DCDB779F168B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4063850-BEA1-4086-AC73-DCDB779F168B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{B4063850-BEA1-4086-AC73-DCDB779F168B}.Debug|x64.Build.0 = Debug|Any CPU
+		{B4063850-BEA1-4086-AC73-DCDB779F168B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B4063850-BEA1-4086-AC73-DCDB779F168B}.Debug|x86.Build.0 = Debug|Any CPU
+		{B4063850-BEA1-4086-AC73-DCDB779F168B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4063850-BEA1-4086-AC73-DCDB779F168B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4063850-BEA1-4086-AC73-DCDB779F168B}.Release|x64.ActiveCfg = Release|Any CPU
+		{B4063850-BEA1-4086-AC73-DCDB779F168B}.Release|x64.Build.0 = Release|Any CPU
+		{B4063850-BEA1-4086-AC73-DCDB779F168B}.Release|x86.ActiveCfg = Release|Any CPU
+		{B4063850-BEA1-4086-AC73-DCDB779F168B}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
