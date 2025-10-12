@@ -346,6 +346,16 @@
             "related": ".xml"
           }
         }
+      },
+      "IoTSensorReaderApp/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v9.0",
+        "compile": {
+          "bin/placeholder/IoTSensorReaderApp.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/IoTSensorReaderApp.dll": {}
+        }
       }
     }
   },
@@ -793,10 +803,16 @@
         "useSharedDesignerContext.txt",
         "version.txt"
       ]
+    },
+    "IoTSensorReaderApp/1.0.0": {
+      "type": "project",
+      "path": "../IoTSensorReaderApp/IoTSensorReaderApp.csproj",
+      "msbuildProject": "../IoTSensorReaderApp/IoTSensorReaderApp.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net9.0": [
+      "IoTSensorReaderApp >= 1.0.0",
       "Microsoft.NET.Test.Sdk >= 17.12.0",
       "NUnit >= 4.2.2",
       "NUnit.Analyzers >= 4.4.0",
@@ -828,7 +844,11 @@
       "frameworks": {
         "net9.0": {
           "targetAlias": "net9.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "/Users/zebmarkland/Documents/IoT Hub Application Project/IoTSensorReader/IoTSensorReaderApp/IoTSensorReaderApp.csproj": {
+              "projectPath": "/Users/zebmarkland/Documents/IoT Hub Application Project/IoTSensorReader/IoTSensorReaderApp/IoTSensorReaderApp.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
