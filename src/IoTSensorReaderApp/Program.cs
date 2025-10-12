@@ -4,6 +4,7 @@ using IoTSensorReaderApp.Messaging;
 using IoTSensorReaderApp.Processing;
 using IoTSensorReaderApp.Configuration;
 using IoTSensorReaderApp.Models;
+using IoTSensorReaderApp.Formatting;
 
 class Program
 {
@@ -15,8 +16,8 @@ class Program
 
         var sensorHandlers = new List<ISensorReadingHandler>
         {
-            new TemperatureReadingHandler(outputService),
-            new HumidityReadingHandler(outputService)
+            new TemperatureReadingHandler(outputService, new TemperatureFormatter()),
+            new HumidityReadingHandler(outputService, new HumidityFormatter())
         };
 
         IMessageProcessor messageProcessor = new SensorMessageProcessor(sensorHandlers, outputService);
