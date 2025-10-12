@@ -1,5 +1,6 @@
 using System;
 using System.Text;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Azure.Messaging.EventHubs.Consumer;
@@ -16,7 +17,7 @@ namespace IoTSensorReaderApp.Messaging
     /// </summary>
     public class IoTHubListener : IIoTHubListener
     {
-        private readonly IMessageProcesser _processor;
+        private readonly IMessageProcessor _processor;
         private readonly IAppConfiguration _config;
 
         public IoTHubListener(IMessageProcessor processor, IAppConfiguration config)
@@ -28,22 +29,60 @@ namespace IoTSensorReaderApp.Messaging
         public async Task StartListeningAsync(CancellationToken cancellationToken)
         {
             var connectionString = _config.IoTHubConnectionString;
-            var consumerGroup = EventHubCosumerClient.DefaultConsumerGroupName;
+            var consumerGroup = EventHubConsumerClient.DefaultConsumerGroupName;
 
             await using var consumer = new EventHubConsumerClient(consumerGroup, connectionString);
 
-            await foreach (PartitionEvent partitionEvent in consumer.ReadEventsAsync(cancellationToken))
+            var partitions = await consumer.GetPartitionIdsAsync();
+            var tasks = new List<Task>();
+
+            foreach (var partitionId in partitions)
             {
-                var messageBody = Encoding.UTF8.GetString(partitionEvent.Data.Body.ToArray());
 
-                var reading = new SensorReading
+                var task = Task.Run(async () =>
                 {
-                    RawMessage = messageBody,
-                    TimestampAttribute = DateTime.UtcNow
-                };
+                    try
+                    {
+                        await foreach (PartitionEvent partitionEvent in consumer.ReadEventsFromPartitionAsync(
+                            partitionId,
+                            EventPosition.Latest,
+                            cancellationToken))
+                        {
+                            var messageBody = Encoding.UTF8.GetString(partitionEvent.Data.Body.ToArray());
 
-                await _processor.ProcessMessageAsync(reading);
+                            SensorReading reading;
+
+                            try
+                            {
+                                reading = JsonSerializer.Deserialize<SensorReading>(messageBody);
+                                reading.RawMessage = messageBody;
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine($"Deserialization failed: {ex.Message}");
+                                reading = new SensorReading
+                                {
+                                    SensorId = 0,
+                                    Type = SensorType.Unknown,
+                                    Value = null,
+                                    TimeStamp = DateTime.UtcNow,
+                                    RawMessage = messageBody
+                                };
+                            }
+
+                            await _processor.ProcessMessageAsync(reading);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Error in partition {partitionId}: {ex.Message}");
+                    }
+                }, cancellationToken);
+
+                tasks.Add(task);
             }
+
+            await Task.WhenAll(tasks); 
         }
     }
 }
