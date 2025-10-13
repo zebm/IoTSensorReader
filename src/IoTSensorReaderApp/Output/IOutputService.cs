@@ -1,5 +1,3 @@
-using System.Threading.Tasks;
-
 namespace IoTSensorReaderApp.Output
 {
     /// <summary>

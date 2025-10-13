@@ -3,7 +3,6 @@ using IoTSensorReaderApp.Sensors;
 using IoTSensorReaderApp.Messaging;
 using IoTSensorReaderApp.Processing;
 using IoTSensorReaderApp.Configuration;
-using IoTSensorReaderApp.Models;
 using IoTSensorReaderApp.Formatting;
 
 class Program
@@ -22,7 +21,10 @@ class Program
 
         IMessageProcessor messageProcessor = new SensorMessageProcessor(sensorHandlers, outputService);
 
-        IIoTHubListener listener = new IoTHubListener(messageProcessor, config);
+        IEventHubConsumer eventHubConsumer = new EventHubConsumer(config);
+        IMessageDeserializer deserializer = new JsonMessageDeserializer();
+
+        IMessageCoordinator listener = new MessageCoordinator(eventHubConsumer, messageProcessor, deserializer);
 
         using var cts = new CancellationTokenSource();
 
@@ -30,9 +32,15 @@ class Program
         {
             eventArgs.Cancel = true;
             cts.Cancel();
-            Console.WriteLine("Cancelled!");
         };
 
-        await listener.StartListeningAsync(cts.Token);
+        try
+        {
+            await listener.StartListeningAsync(cts.Token);
+        }
+        catch (TaskCanceledException)
+        {
+            Console.WriteLine("Operation canceled.");
+        }
     }
 }

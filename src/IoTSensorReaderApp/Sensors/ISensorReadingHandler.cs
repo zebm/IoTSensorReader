@@ -1,4 +1,3 @@
-using System.Threading.Tasks;
 using IoTSensorReaderApp.Models;
 
 namespace IoTSensorReaderApp.Sensors

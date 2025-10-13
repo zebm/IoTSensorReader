@@ -1,12 +1,9 @@
-using System.Threading;
-using System.Threading.Tasks;
-
 namespace IoTSensorReaderApp.Messaging
 {
     /// <summary>
-    /// Define contract for service to listen for messages from a IoT HUB
+    /// Coordinates messages from a messaging system and delegates deserialisation and processing.
     /// </summary>
-    public interface IIoTHubListener
+    public interface IMessageCoordinator
     {
         /// <summary>
         /// Listens for incoming messages 
