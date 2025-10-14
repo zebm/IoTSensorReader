@@ -1,5 +1,3 @@
-using System;
-using System.Threading.Tasks;
 using IoTSensorReaderApp.Models;
 using IoTSensorReaderApp.Output;
 using IoTSensorReaderApp.Formatting;
