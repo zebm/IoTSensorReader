@@ -10,16 +10,22 @@ class Program
     static async Task Main(string[] args)
     {
         IAppConfiguration config = new AppConfiguration();
+        IDbConfiguration dbConfig = new DbConfiguration();
 
-        IOutputService outputService = new ConsoleOutputService();
+        var consoleOutputService = new ConsoleOutputService();
+        var dbOutputService = new DbOutputService(dbConfig);
+
+        var compositeOutputService = new CompositeOutputService(new List<IOutputService> { consoleOutputService, dbOutputService });
 
         var sensorHandlers = new List<ISensorReadingHandler>
         {
-            new TemperatureReadingHandler(outputService, new TemperatureFormatter()),
-            new HumidityReadingHandler(outputService, new HumidityFormatter())
+            new TemperatureReadingHandler(consoleOutputService, new TemperatureFormatter()),
+            new HumidityReadingHandler(consoleOutputService, new HumidityFormatter()),
+            new JsonHandler(dbOutputService, new JsonSensorFormatter())
+
         };
 
-        IMessageProcessor messageProcessor = new SensorMessageProcessor(sensorHandlers, outputService);
+        IMessageProcessor messageProcessor = new SensorMessageProcessor(sensorHandlers, compositeOutputService);
 
         IEventHubConsumer eventHubConsumer = new EventHubConsumer(config);
         IMessageDeserializer deserializer = new JsonMessageDeserializer();

@@ -20,16 +20,21 @@ namespace IoTSensorReaderApp.Processing
 
         public async Task ProcessMessageAsync(SensorReading reading)
         {
+            bool handlerFound = false;
+            
             foreach (var handler in _handlers)
             {
                 if (handler.CanHandle(reading))
                 {
                     await handler.HandleAsync(reading);
-                    return;
+                    handlerFound = true;
                 }
             }
 
-            await _output.WriteAsync($"No handler found for sensor type: {reading.Type}");
+            if (!handlerFound)
+            {
+                await _output.WriteAsync($"No handler found for sensor type: {reading.Type}");
+            }
         }
     }
 }
