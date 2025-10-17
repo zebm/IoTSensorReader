@@ -11,12 +11,12 @@ if not connection_string:
 client = IoTHubDeviceClient.create_from_connection_string(connection_string)
 
 messages = [
-    {"SensorId": 123456, "Type" : 1, "Value": "22.5"},
-    {"SensorId": 123456, "Type" : 2, "Value": "30"},
-    {"SensorId": 123456, "Type" : 1, "Value": "22.7"},
-    {"SensorId": 123456, "Type" : 2, "Value": "29.98"},
-    {"SensorId": 123456, "Type" : 1, "Value": "22.6"},
-    {"SensorId": 123456, "Type" : 2, "Value": "30.1"},
+    {"SensorId": 123456, "Type" : 1, "Value": 22.5},
+    {"SensorId": 123456, "Type" : 2, "Value": 30.0},
+    {"SensorId": 123456, "Type" : 1, "Value": 22.7},
+    {"SensorId": 123456, "Type" : 2, "Value": 29.98},
+    {"SensorId": 123456, "Type" : 1, "Value": 22.6},
+    {"SensorId": 123456, "Type" : 2, "Value": 30.1},
 ]
 
 for msg in messages:

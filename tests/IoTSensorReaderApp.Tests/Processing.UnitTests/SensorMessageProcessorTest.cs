@@ -30,7 +30,7 @@ namespace IoTSensorReaderApp.Tests.Processing.UnitTests
             SystemUnderTest = new SensorMessageProcessor(Handlers, MockOutputService);
         }
 
-        protected static SensorReading CreateTemperatureReading(int sensorId = 123, string value = "22.5")
+        protected static SensorReading CreateTemperatureReading(int sensorId = 123, double value = 22.5)
         {
             return new SensorReading
             {
@@ -42,7 +42,7 @@ namespace IoTSensorReaderApp.Tests.Processing.UnitTests
             };
         }
 
-        protected static SensorReading CreateHumidityReading(int sensorId = 456, string value = "65")
+        protected static SensorReading CreateHumidityReading(int sensorId = 456, double value = 65.0)
         {
             return new SensorReading
             {

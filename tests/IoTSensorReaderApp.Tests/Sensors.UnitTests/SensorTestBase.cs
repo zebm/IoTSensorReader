@@ -17,7 +17,7 @@ namespace IoTSensorReaderApp.Tests.Sensors.UnitTests
             MockFormatter = Substitute.For<ISensorFormatter>();
         }
 
-        protected SensorReading CreateTemperatureReading(string value = "22.5")
+        protected SensorReading CreateTemperatureReading(double value = 22.5)
         {
             return new SensorReading
             {
@@ -28,7 +28,7 @@ namespace IoTSensorReaderApp.Tests.Sensors.UnitTests
             };
         }
 
-        protected SensorReading CreateHumidityReading(string value = "65")
+        protected SensorReading CreateHumidityReading(double value = 65.0)
         {
             return new SensorReading
             {

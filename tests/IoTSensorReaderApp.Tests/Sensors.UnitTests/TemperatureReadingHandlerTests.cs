@@ -38,7 +38,7 @@ namespace IoTSensorReaderApp.Tests.Sensors.UnitTests
         [Test]
         public async Task HandleAsyncFormatsAndOutputsReading()
         {
-            var reading = CreateTemperatureReading("25.0");
+            var reading = CreateTemperatureReading(25.0);
             var formattedMessage = "Test message";
             MockFormatter.Format(reading).Returns(formattedMessage);
 
