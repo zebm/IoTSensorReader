@@ -8,14 +8,11 @@ namespace IoTSensorReaderApp.Messaging
         private readonly IMessageProcessor _processor;
         private readonly IMessageDeserializer _deserializer;
 
-        public MessageCoordinator(
-            IEventHubConsumer eventHubConsumer,
-            IMessageProcessor processor,
-            IMessageDeserializer deserializer)
+        public MessageCoordinator(IEventHubConsumer eventHubConsumer, IMessageProcessor processor, IMessageDeserializer deserializer)
         {
-            _eventHubConsumer = eventHubConsumer;
-            _processor = processor;
-            _deserializer = deserializer;
+            _eventHubConsumer = eventHubConsumer ?? throw new ArgumentNullException(nameof(eventHubConsumer));
+            _deserializer = deserializer ?? throw new ArgumentNullException(nameof(deserializer));
+            _processor = processor ?? throw new ArgumentNullException(nameof(processor));
         }
 
         public async Task StartListeningAsync(CancellationToken cancellationToken)
