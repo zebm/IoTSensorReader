@@ -22,12 +22,49 @@ namespace IoTSensorReaderApp.Messaging
             await using var consumer = new EventHubConsumerClient(consumerGroup, connectionString);
             var partitions = await consumer.GetPartitionIdsAsync();
 
-            foreach (var partitionId in partitions)
+            var partitionTasks = partitions.Select(partitionId => 
+                ReadPartitionMessagesAsync(consumer, partitionId, cancellationToken)).ToArray();
+
+            var channel = System.Threading.Channels.Channel.CreateUnbounded<string>();
+            var writer = channel.Writer;
+
+            var backgroundTasks = partitionTasks.Select(async partitionMessages =>
             {
-                await foreach (var message in ReadPartitionMessagesAsync(consumer, partitionId, cancellationToken))
+                try
                 {
-                    yield return message;
+                    await foreach (var message in partitionMessages)
+                    {
+                        if (!cancellationToken.IsCancellationRequested)
+                        {
+                            await writer.WriteAsync(message, cancellationToken);
+                        }
+                    }
                 }
+                catch (OperationCanceledException)
+                {
+                    Console.WriteLine("Partition task has been cancelled.");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error reading from partition: {ex.Message}");
+                }
+            });
+
+            _ = Task.Run(async () =>
+            {
+                try
+                {
+                    await Task.WhenAll(backgroundTasks);
+                }
+                finally
+                {
+                    writer.TryComplete();
+                }
+            }, cancellationToken);
+
+            await foreach (var message in channel.Reader.ReadAllAsync(cancellationToken))
+            {
+                yield return message;
             }
         }
 
