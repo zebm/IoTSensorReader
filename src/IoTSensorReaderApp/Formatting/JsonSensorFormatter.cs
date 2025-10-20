@@ -5,6 +5,11 @@ namespace IoTSensorReaderApp.Formatting
 {
     public class JsonSensorFormatter : ISensorFormatter
     {
+        public bool CanFormat(SensorReading reading)
+        {
+            return true;
+        }
+
         public String Format(SensorReading reading)
         {
             var json = JsonSerializer.Serialize(new

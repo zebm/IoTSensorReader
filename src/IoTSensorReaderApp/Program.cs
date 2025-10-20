@@ -12,17 +12,23 @@ class Program
         IAppConfiguration config = new AppConfiguration();
         IDbConfiguration dbConfig = new DbConfiguration();
 
-        var consoleOutputService = new ConsoleOutputService();
-        var dbOutputService = new DbOutputService(dbConfig);
+        var formatters = new List<ISensorFormatter>
+        {
+            new TemperatureFormatter(),
+            new HumidityFormatter()
+        };
+
+        var jsonFormatter = new JsonSensorFormatter();
+
+        var consoleOutputService = new ConsoleOutputService(formatters);
+        var dbOutputService = new DbOutputService(dbConfig, jsonFormatter);
 
         var compositeOutputService = new CompositeOutputService(new List<IOutputService> { consoleOutputService, dbOutputService });
 
         var sensorHandlers = new List<ISensorReadingHandler>
         {
-            new TemperatureReadingHandler(consoleOutputService, new TemperatureFormatter()),
-            new HumidityReadingHandler(consoleOutputService, new HumidityFormatter()),
-            new JsonHandler(dbOutputService, new JsonSensorFormatter())
-
+            new TemperatureReadingHandler(),
+            new HumidityReadingHandler()
         };
 
         IMessageProcessor messageProcessor = new SensorMessageProcessor(sensorHandlers, compositeOutputService);

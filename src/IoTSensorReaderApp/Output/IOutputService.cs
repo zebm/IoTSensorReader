@@ -1,3 +1,5 @@
+using IoTSensorReaderApp.Models;
+
 namespace IoTSensorReaderApp.Output
 {
     /// <summary>
@@ -5,6 +7,6 @@ namespace IoTSensorReaderApp.Output
     /// </summary>
     public interface IOutputService
     {
-        Task WriteAsync(string message);
+        Task WriteAsync(SensorReading reading);
     }
 }

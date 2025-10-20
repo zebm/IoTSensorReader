@@ -1,5 +1,3 @@
-using System;
-
 namespace IoTSensorReaderApp.Models
 {
     /// <summary>

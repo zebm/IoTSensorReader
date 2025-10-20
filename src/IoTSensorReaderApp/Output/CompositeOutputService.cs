@@ -1,5 +1,4 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using IoTSensorReaderApp.Models;
 
 namespace IoTSensorReaderApp.Output
 {
@@ -12,11 +11,11 @@ namespace IoTSensorReaderApp.Output
             _outputServices = outputServices ?? throw new ArgumentNullException(nameof(outputServices));
         }
 
-        public async Task WriteAsync(string message)
+        public async Task WriteAsync(SensorReading reading)
         {
             foreach (var outputService in _outputServices)
             {
-                await outputService.WriteAsync(message);
+                await outputService.WriteAsync(reading);
             }
         }
     }

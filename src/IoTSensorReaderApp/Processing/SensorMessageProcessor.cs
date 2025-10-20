@@ -4,9 +4,6 @@ using IoTSensorReaderApp.Sensors;
 
 namespace IoTSensorReaderApp.Processing
 {
-    /// <summary>
-    /// Sends sensor reading to the correct handler based on the sensor type.
-    /// </summary>
     public class SensorMessageProcessor : IMessageProcessor
     {
         private readonly IEnumerable<ISensorReadingHandler> _handlers;
@@ -20,20 +17,16 @@ namespace IoTSensorReaderApp.Processing
 
         public async Task ProcessMessageAsync(SensorReading reading)
         {
-            bool handlerFound = false;
-            
-            foreach (var handler in _handlers)
-            {
-                if (handler.CanHandle(reading))
-                {
-                    await handler.HandleAsync(reading);
-                    handlerFound = true;
-                }
-            }
+            var handler = _handlers.FirstOrDefault(h => h.CanHandle(reading));
 
-            if (!handlerFound)
+            if (handler != null)
             {
-                await _output.WriteAsync($"No handler found for sensor type: {reading.Type}");
+                handler.Handle(reading);
+                await _output.WriteAsync(reading);
+            }
+            else
+            {
+                throw new InvalidOperationException($"No handler found for sensor type: {reading.Type}");
             }
         }
     }

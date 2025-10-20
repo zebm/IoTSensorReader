@@ -1,14 +1,30 @@
-using System;
-using System.Threading.Tasks;
+using IoTSensorReaderApp.Formatting;
+using IoTSensorReaderApp.Models;
 
 namespace IoTSensorReaderApp.Output
 {
     public class ConsoleOutputService : IOutputService
     {
-        public Task WriteAsync(string message)
+        private  IEnumerable<ISensorFormatter> _formatters;
+
+        public ConsoleOutputService(IEnumerable<ISensorFormatter> formatters)
         {
-            Console.WriteLine(message);
-            return Task.CompletedTask;
+            _formatters = formatters ?? throw new ArgumentNullException(nameof(formatters));
+        }
+        
+        public Task WriteAsync(SensorReading reading)
+        {
+            var formatter = _formatters.FirstOrDefault(f => f.CanFormat(reading));
+            if (formatter != null)
+            {
+                var formattedMessage = formatter.Format(reading);
+                Console.WriteLine(formattedMessage);
+                return Task.CompletedTask;
+            }else
+            {
+                throw new InvalidOperationException($"No handler found for sensor type: {reading.Type}");
+            }
         }
     }
-}
+}               
+        
