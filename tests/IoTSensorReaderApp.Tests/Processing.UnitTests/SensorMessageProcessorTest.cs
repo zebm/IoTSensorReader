@@ -12,7 +12,7 @@ namespace IoTSensorReaderApp.Tests.Processing.UnitTests
         protected ISensorReadingHandler MockTemperatureHandler { get; private set; } = null!;
         protected ISensorReadingHandler MockHumidityHandler { get; private set; } = null!;
         protected List<ISensorReadingHandler> Handlers { get; private set; } = null!;
-        protected SensorMessageProcessor SystemUnderTest { get; private set; } = null!;
+        protected SensorMessageProcessor Processor { get; private set; } = null!;
 
         [SetUp]
         public virtual void SetUp()
@@ -27,7 +27,7 @@ namespace IoTSensorReaderApp.Tests.Processing.UnitTests
                 MockHumidityHandler 
             };
 
-            SystemUnderTest = new SensorMessageProcessor(Handlers, MockOutputService);
+            Processor = new SensorMessageProcessor(Handlers, MockOutputService);
         }
 
         protected static SensorReading CreateTemperatureReading(int sensorId = 123, double value = 22.5)

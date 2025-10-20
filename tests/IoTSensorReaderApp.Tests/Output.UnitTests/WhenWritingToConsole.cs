@@ -1,32 +1,62 @@
+using IoTSensorReaderApp.Models;
+using NSubstitute;
+
 namespace IoTSensorReaderApp.Tests.Output.UnitTests
 {
     [TestFixture]
     public class WhenWritingToConsole : ConsoleOutputServiceTest
     {
-        [Test]
-        public async Task ThenMessageIsWrittenToConsole()
+        private SensorReading _sensorReading;
+
+        [SetUp]
+        public new void SetUp()
         {
-            var message = "Test message";
-
-            await OutputService.WriteAsync(message);
-
-            var output = GetCapturedOutput();
-            Assert.That(output, Does.Contain(message));
+            base.TestSetUp();
+            _sensorReading = new SensorReading
+            {
+                SensorId = 123,
+                Type = SensorType.Temperature,
+                Value = 22.5,
+                TimeStamp = DateTime.UtcNow
+            };
         }
 
         [Test]
-        public async Task ThenMultipleMessagesAreWrittenInOrder()
+        public async Task ThenFormatterIsCalledAndOutputWrittenToConsole()
         {
-            var firstMessage = "First message";
-            var secondMessage = "Second message";
+            var expectedMessage = "Sensor 123 reading: 22.5";
+            MockFormatter.CanFormat(_sensorReading).Returns(true);
+            MockFormatter.Format(_sensorReading).Returns(expectedMessage);
 
-            await OutputService.WriteAsync(firstMessage);
-            await OutputService.WriteAsync(secondMessage);
+            await OutputService.WriteAsync(_sensorReading);
 
             var output = GetCapturedOutput();
-            Assert.That(output, Does.Contain(firstMessage));
-            Assert.That(output, Does.Contain(secondMessage));
-            Assert.That(output.IndexOf(firstMessage), Is.LessThan(output.IndexOf(secondMessage)));
+            Assert.That(output, Does.Contain(expectedMessage));
+        }
+
+        [Test]
+        public async Task ThenFormatterCanFormatIsCheckedFirst()
+        {
+            MockFormatter.CanFormat(_sensorReading).Returns(true);
+            MockFormatter.Format(_sensorReading).Returns("formatted");
+
+            await OutputService.WriteAsync(_sensorReading);
+
+            Received.InOrder(() =>
+            {
+                MockFormatter.CanFormat(_sensorReading);
+                MockFormatter.Format(_sensorReading);
+            });
+        }
+
+        [Test]
+        public void ThenExceptionThrownWhenNoFormatterCanHandle()
+        {
+            MockFormatter.CanFormat(_sensorReading).Returns(false);
+
+            Assert.ThrowsAsync<InvalidOperationException>(
+                async () => await OutputService.WriteAsync(_sensorReading)
+            );
         }
     }
 }

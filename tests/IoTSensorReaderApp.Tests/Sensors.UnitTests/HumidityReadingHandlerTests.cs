@@ -12,7 +12,7 @@ namespace IoTSensorReaderApp.Tests.Sensors.UnitTests
         public new void SetUp()
         {
             base.SetUp();
-            _handler = new HumidityReadingHandler(MockOutputService, MockFormatter);
+            _handler = new HumidityReadingHandler();
         }
 
         [Test]
@@ -33,19 +33,6 @@ namespace IoTSensorReaderApp.Tests.Sensors.UnitTests
             var result = _handler.CanHandle(temperatureReading);
 
             Assert.That(result, Is.False);
-        }
-
-        [Test]
-        public async Task HandleAsyncFormatsAndOutputsReading()
-        {
-            var reading = CreateHumidityReading(70.0);
-            var formattedMessage = "Test message";
-            MockFormatter.Format(reading).Returns(formattedMessage);
-
-            await _handler.HandleAsync(reading);
-
-            MockFormatter.Received(1).Format(reading);
-            await MockOutputService.Received(1).WriteAsync(formattedMessage);
         }
     }
 }

@@ -12,11 +12,22 @@ namespace IoTSensorReaderApp.Tests.Processing.UnitTests
             SetupHumidityHandler();
             var humidityReading = CreateHumidityReading();
 
-            await SystemUnderTest.ProcessMessageAsync(humidityReading);
+            await Processor.ProcessMessageAsync(humidityReading);
 
             MockHumidityHandler.Received(1).CanHandle(humidityReading);
-            await MockHumidityHandler.Received(1).HandleAsync(humidityReading);
-            await MockTemperatureHandler.DidNotReceive().HandleAsync(Arg.Any<SensorReading>());
+            MockHumidityHandler.Received(1).Handle(humidityReading);
+            MockTemperatureHandler.DidNotReceive().Handle(Arg.Any<SensorReading>());
+        }
+
+        [Test]
+        public async Task ThenOutputServiceReceivesReading()
+        {
+            SetupHumidityHandler();
+            var humidityReading = CreateHumidityReading();
+
+            await Processor.ProcessMessageAsync(humidityReading);
+
+            await MockOutputService.Received(1).WriteAsync(humidityReading);
         }
     }
 }

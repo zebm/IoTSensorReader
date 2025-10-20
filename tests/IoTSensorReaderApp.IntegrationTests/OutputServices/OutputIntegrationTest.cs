@@ -16,10 +16,18 @@ namespace IoTSensorReaderApp.IntegrationTests.OutputServices
         public void SetUp()
         {
             BaseSetUp();
-            ConsoleService = new ConsoleOutputService();
             TemperatureFormatter = new TemperatureFormatter();
             HumidityFormatter = new HumidityFormatter();
             JsonFormatter = new JsonSensorFormatter();
+            
+            var formatters = new List<ISensorFormatter>
+            {
+                TemperatureFormatter,
+                HumidityFormatter,
+                JsonFormatter
+            };
+            
+            ConsoleService = new ConsoleOutputService(formatters);
         }
     }
 }

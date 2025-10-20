@@ -19,16 +19,16 @@ namespace IoTSensorReaderApp.IntegrationTests.OutputServices
                 TimeStamp = DateTime.Now
             };
 
-            var formattedMessage = TemperatureFormatter.Format(reading);
-            await compositeService.WriteAsync(formattedMessage);
+            await compositeService.WriteAsync(reading);
 
             var output = GetConsoleOutput();
             Assert.That(output, Does.Contain("555"));
-            Assert.That(output, Does.Contain("30°C"));
+            Assert.That(output, Does.Contain("30"));
+            Assert.That(output, Does.Contain("°C"));
         }
 
         [Test]
-        public async Task ThenDifferentFormattersProduceDifferentOutput()
+        public async Task ThenDifferentFormattersProduceDifferentOutputForTemperature()
         {
             var reading = new SensorReading
             {
@@ -38,19 +38,17 @@ namespace IoTSensorReaderApp.IntegrationTests.OutputServices
                 TimeStamp = DateTime.Now
             };
 
-            var humanReadable = TemperatureFormatter.Format(reading);
-            var jsonFormat = JsonFormatter.Format(reading);
-            
-            await ConsoleService.WriteAsync("Human: " + humanReadable);
-            await ConsoleService.WriteAsync("JSON: " + jsonFormat);
+            await ConsoleService.WriteAsync(reading);
 
             var output = GetConsoleOutput();
-            Assert.That(output, Does.Contain("35°C"));
-            Assert.That(output, Does.Contain("\"type\":"));
+            Assert.That(output, Does.Contain("666"));
+            Assert.That(output, Does.Contain("35"));
+            Assert.That(output, Does.Contain("°C"));
+            Assert.That(output, Does.Contain("Temperature"));
         }
 
         [Test]
-        public async Task ThenMultipleFormattersWithCompositeService()
+        public async Task ThenMultipleReadingsWithCompositeService()
         {
             var services = new List<IOutputService> { ConsoleService };
             var compositeService = new CompositeOutputService(services);
@@ -70,18 +68,17 @@ namespace IoTSensorReaderApp.IntegrationTests.OutputServices
                 Value = 70.0,
                 TimeStamp = DateTime.Now
             };
-
-            var tempFormatted = TemperatureFormatter.Format(tempReading);
-            var humidityFormatted = HumidityFormatter.Format(humidityReading);
             
-            await compositeService.WriteAsync(tempFormatted);
-            await compositeService.WriteAsync(humidityFormatted);
+            await compositeService.WriteAsync(tempReading);
+            await compositeService.WriteAsync(humidityReading);
 
             var output = GetConsoleOutput();
             Assert.That(output, Does.Contain("777"));
-            Assert.That(output, Does.Contain("28°C"));
+            Assert.That(output, Does.Contain("28"));
+            Assert.That(output, Does.Contain("°C"));
             Assert.That(output, Does.Contain("888"));
-            Assert.That(output, Does.Contain("70%"));
+            Assert.That(output, Does.Contain("70"));
+            Assert.That(output, Does.Contain("%"));
         }
     }
 }

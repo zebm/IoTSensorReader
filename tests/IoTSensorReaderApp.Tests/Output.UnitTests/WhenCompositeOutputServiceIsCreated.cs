@@ -1,21 +1,32 @@
 using IoTSensorReaderApp.Output;
+using NSubstitute;
 
 namespace IoTSensorReaderApp.Tests.Output.UnitTests
 {
     [TestFixture]
-    public class WhenCompositeOutputServiceIsCreated : CompositeOutputServiceTest
+    public class WhenCompositeOutputServiceIsCreated
     {
         [Test]
-        public async Task ThenThrowsExceptionForNullServices()
+        public void ThenThrowsExceptionIfServicesIsNull()
         {
-            Assert.Throws<System.ArgumentNullException>(() => new CompositeOutputService(null));
+            Assert.Throws<ArgumentNullException>(() => new CompositeOutputService(null!));
         }
 
         [Test]
-        public void ThenAcceptsSingleService()
+        public void ThenCanBeCreatedWithOneService()
         {
-            var mockService = NSubstitute.Substitute.For<IOutputService>();
+            var mockService = Substitute.For<IOutputService>();
             var services = new List<IOutputService> { mockService };
+
+            Assert.DoesNotThrow(() => new CompositeOutputService(services));
+        }
+
+        [Test]
+        public void ThenCanBeCreatedWithMultipleServices()
+        {
+            var mockService1 = Substitute.For<IOutputService>();
+            var mockService2 = Substitute.For<IOutputService>();
+            var services = new List<IOutputService> { mockService1, mockService2 };
 
             Assert.DoesNotThrow(() => new CompositeOutputService(services));
         }

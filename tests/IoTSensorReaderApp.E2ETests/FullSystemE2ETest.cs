@@ -58,15 +58,22 @@ namespace IoTSensorReaderApp.E2ETests
         [Test]
         public async Task EndToEndTest_SendTemperatureAndHumidityReadings_ShouldProcessThroughEntireSystem()
         {
-            var consoleOutputService = new ConsoleOutputService();
-            var dbOutputService = new DbOutputService(_dbConfig);
+        
+            var formatters = new List<ISensorFormatter>
+            {
+                new TemperatureFormatter(),
+                new HumidityFormatter()
+            };
+            var jsonFormatter = new JsonSensorFormatter();
+
+            var consoleOutputService = new ConsoleOutputService(formatters);
+            var dbOutputService = new DbOutputService(_dbConfig, jsonFormatter);
             var compositeOutputService = new CompositeOutputService(new List<IOutputService> { consoleOutputService, dbOutputService });
 
             var sensorHandlers = new List<ISensorReadingHandler>
             {
-                new TemperatureReadingHandler(consoleOutputService, new TemperatureFormatter()),
-                new HumidityReadingHandler(consoleOutputService, new HumidityFormatter()),
-                new JsonHandler(dbOutputService, new JsonSensorFormatter())
+                new TemperatureReadingHandler(),
+                new HumidityReadingHandler(),
             };
 
             var messageProcessor = new SensorMessageProcessor(sensorHandlers, compositeOutputService);

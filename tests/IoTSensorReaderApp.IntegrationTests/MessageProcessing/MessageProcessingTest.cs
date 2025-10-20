@@ -19,12 +19,18 @@ namespace IoTSensorReaderApp.IntegrationTests.MessageProcessing
         public void SetUp()
         {
             BaseSetUp();
-            
+
             Deserializer = new JsonMessageDeserializer();
-            ConsoleService = new ConsoleOutputService();
+            var formatters = new List<ISensorFormatter>
+            {
+                new TemperatureFormatter(),
+                new HumidityFormatter()
+            };        
+
+            ConsoleService = new ConsoleOutputService(formatters);
             
-            var tempHandler = new TemperatureReadingHandler(ConsoleService, new TemperatureFormatter());
-            var humidityHandler = new HumidityReadingHandler(ConsoleService, new HumidityFormatter());
+            var tempHandler = new TemperatureReadingHandler();
+            var humidityHandler = new HumidityReadingHandler();
             
             Handlers = new List<ISensorReadingHandler> { tempHandler, humidityHandler };
             Processor = new SensorMessageProcessor(Handlers, ConsoleService);

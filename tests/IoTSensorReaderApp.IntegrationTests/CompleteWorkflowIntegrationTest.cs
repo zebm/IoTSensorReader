@@ -13,9 +13,15 @@ namespace IoTSensorReaderApp.IntegrationTests
         public async Task WhenProcessingCompleteWorkflowThenAllComponentsWorkTogether()
         {
             var deserializer = new JsonMessageDeserializer();
-            var consoleService = new ConsoleOutputService();
+            var formatters = new List<ISensorFormatter>
+            {
+                new TemperatureFormatter(),
+                new HumidityFormatter()
+            };
+            var jsonFormatter = new JsonSensorFormatter();
+            var consoleService = new ConsoleOutputService(formatters);
             var tempFormatter = new TemperatureFormatter();
-            var tempHandler = new TemperatureReadingHandler(consoleService, tempFormatter);
+            var tempHandler = new TemperatureReadingHandler();
             var handlers = new List<ISensorReadingHandler> { tempHandler };
             var processor = new SensorMessageProcessor(handlers, consoleService);
             
@@ -41,11 +47,18 @@ namespace IoTSensorReaderApp.IntegrationTests
         public async Task WhenProcessingMultipleSensorTypesInWorkflowThenAllProcessCorrectly()
         {
             var deserializer = new JsonMessageDeserializer();
-            var consoleService = new ConsoleOutputService();
+            var formatters = new List<ISensorFormatter>
+            {
+                new TemperatureFormatter(),
+                new HumidityFormatter()
+            };
+
+            var jsonFormatter = new JsonSensorFormatter();
+            var consoleService = new ConsoleOutputService(formatters);
             var compositeService = new CompositeOutputService(new List<IOutputService> { consoleService });
             
-            var tempHandler = new TemperatureReadingHandler(compositeService, new TemperatureFormatter());
-            var humidityHandler = new HumidityReadingHandler(compositeService, new HumidityFormatter());
+            var tempHandler = new TemperatureReadingHandler();
+            var humidityHandler = new HumidityReadingHandler();
             var handlers = new List<ISensorReadingHandler> { tempHandler, humidityHandler };
             
             var processor = new SensorMessageProcessor(handlers, compositeService);

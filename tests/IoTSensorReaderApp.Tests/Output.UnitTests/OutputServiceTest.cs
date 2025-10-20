@@ -3,27 +3,27 @@ namespace IoTSensorReaderApp.Tests.Output.UnitTests
     [TestFixture]
     public class OutputServiceTest
     {
-        protected StringWriter CapturedOutput;
+        protected StringWriter ConsoleOutput;
         protected TextWriter OriginalConsole;
 
         [SetUp]
         public void SetUp()
         {
             OriginalConsole = Console.Out;
-            CapturedOutput = new StringWriter();
-            Console.SetOut(CapturedOutput);
+            ConsoleOutput = new StringWriter();
+            Console.SetOut(ConsoleOutput);
         }
 
         [TearDown]
         public void TearDown()
         {
             Console.SetOut(OriginalConsole);
-            CapturedOutput?.Dispose();
+            ConsoleOutput?.Dispose();
         }
 
         protected string GetCapturedOutput()
         {
-            return CapturedOutput.ToString();
+            return ConsoleOutput.ToString();
         }
     }
 }
