@@ -76,9 +76,9 @@ For this example the IoT Device will send 2 messages - one of Temperature type a
 **Component**: MessageCoordinator.cs
 
 **Action**:
-	- Consumes messages from EventHubConsumer
-	- Delegates conversion to JsonMessageDeserializer 
-	- Passes deserialized object to MessageProcessor
+- Consumes messages from EventHubConsumer
+- Delegates conversion to JsonMessageDeserializer 
+- Passes deserialized object to MessageProcessor
 
 
 **Dependencies:** IEventHubConsumer, IMessageDeserializer, IMessageProcessor
@@ -89,17 +89,17 @@ For this example the IoT Device will send 2 messages - one of Temperature type a
 **Component**: JsonMessageDeserializer.cs
 
 **Action**:
-	- Takes raw Json message
-	- Deserializes Json message and returns a SensorReading Object
+- Takes raw Json message
+- Deserializes Json message and returns a SensorReading Object
 
 ### Step. 7 SensorMessageProcessor Selects Strategy for each Message 
 
 **Component**: MessageProcessor.cs 
 
 **Action**:
-	- Selects appropriate Handler for SensorReading
-	- Delegates processing of each reading to Handler 
-	- Passes SensorReading to CompositeOutputService 
+- Selects appropriate Handler for SensorReading
+- Delegates processing of each reading to Handler 
+- Passes SensorReading to CompositeOutputService 
 
 
 **Dependencies:** List\<SensorHandler>, IOutputService 
