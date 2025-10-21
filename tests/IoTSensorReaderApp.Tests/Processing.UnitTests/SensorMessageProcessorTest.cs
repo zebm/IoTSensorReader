@@ -11,6 +11,7 @@ namespace IoTSensorReaderApp.Tests.Processing.UnitTests
         protected IOutputService MockOutputService { get; private set; } = null!;
         protected ISensorReadingHandler MockTemperatureHandler { get; private set; } = null!;
         protected ISensorReadingHandler MockHumidityHandler { get; private set; } = null!;
+        protected ISensorReadingHandler MockUnknownHandler { get; private set; } = null!;
         protected List<ISensorReadingHandler> Handlers { get; private set; } = null!;
         protected SensorMessageProcessor Processor { get; private set; } = null!;
 
@@ -20,11 +21,13 @@ namespace IoTSensorReaderApp.Tests.Processing.UnitTests
             MockOutputService = Substitute.For<IOutputService>();
             MockTemperatureHandler = Substitute.For<ISensorReadingHandler>();
             MockHumidityHandler = Substitute.For<ISensorReadingHandler>();
+            MockUnknownHandler = Substitute.For<ISensorReadingHandler>();
 
-            Handlers = new List<ISensorReadingHandler> 
-            { 
-                MockTemperatureHandler, 
-                MockHumidityHandler 
+            Handlers = new List<ISensorReadingHandler>
+            {
+                MockTemperatureHandler,
+                MockHumidityHandler,
+                MockUnknownHandler
             };
 
             Processor = new SensorMessageProcessor(Handlers, MockOutputService);
@@ -54,6 +57,18 @@ namespace IoTSensorReaderApp.Tests.Processing.UnitTests
             };
         }
 
+        protected static SensorReading CreateUnknownReading(int sensorId = 789, double value = 123.45)
+        {
+            return new SensorReading
+            {
+                SensorId = sensorId,
+                Type = SensorType.Unknown,
+                Value = value,
+                TimeStamp = DateTime.Now,
+                RawMessage = "test message"
+            };
+        }
+
         protected void SetupTemperatureHandler()
         {
             MockTemperatureHandler
@@ -70,10 +85,21 @@ namespace IoTSensorReaderApp.Tests.Processing.UnitTests
             MockHumidityHandler
                 .CanHandle(Arg.Is<SensorReading>(r => r.Type == SensorType.Humidity))
                 .Returns(true);
-            
+
             MockHumidityHandler
                 .CanHandle(Arg.Is<SensorReading>(r => r.Type != SensorType.Humidity))
                 .Returns(false);
         }
+        
+        protected void SetupUnknownHandler()
+        {
+            MockUnknownHandler
+                .CanHandle(Arg.Is<SensorReading>(r => r.Type == SensorType.Unknown))
+                .Returns(true);
+
+            MockUnknownHandler
+                .CanHandle(Arg.Is<SensorReading>(r => r.Type != SensorType.Unknown))
+                .Returns(false);
+        }           
     }
 }

@@ -9,6 +9,11 @@ namespace IoTSensorReaderApp.Output
         public CompositeOutputService(IEnumerable<IOutputService> outputServices)
         {
             _outputServices = outputServices ?? throw new ArgumentNullException(nameof(outputServices));
+
+            if (!_outputServices.Any())
+            {
+                throw new ArgumentException("At least one output service must be provided.", nameof(outputServices));
+            }
         }
 
         public async Task WriteAsync(SensorReading reading)

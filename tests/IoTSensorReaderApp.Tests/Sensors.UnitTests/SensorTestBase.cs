@@ -38,5 +38,16 @@ namespace IoTSensorReaderApp.Tests.Sensors.UnitTests
                 TimeStamp = DateTime.Now
             };
         }
+
+        protected SensorReading CreateUnknownReading()
+        {
+            return new SensorReading
+            {
+                SensorId = 789,
+                Type = SensorType.Unknown, // Unknown type
+                Value = 0.0,
+                TimeStamp = DateTime.Now
+            };
+        }
     }
 }

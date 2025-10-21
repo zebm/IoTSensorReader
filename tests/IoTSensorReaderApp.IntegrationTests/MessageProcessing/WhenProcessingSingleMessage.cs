@@ -33,6 +33,19 @@ namespace IoTSensorReaderApp.IntegrationTests.MessageProcessing
         }
 
         [Test]
+        public async Task ThenUnknownMessageOutputsCorrectly()
+        {
+            var unknownReading = CreateUnknownReading(11111, 123.456);
+
+            await Processor.ProcessMessageAsync(unknownReading);
+
+            var output = GetConsoleOutput();
+            Assert.That(output, Does.Contain("Unknown Sensor"));
+            Assert.That(output, Does.Contain("0"));
+            Assert.That(output, Does.Contain("123.456"));
+        }
+
+        [Test]
         public async Task ThenJsonDeserializationWorksWithProcessing()
         {
             var jsonMessage = CreateValidJsonMessage(11111, 1, 20.0);

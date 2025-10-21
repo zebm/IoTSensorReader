@@ -17,6 +17,7 @@ namespace IoTSensorReaderApp.Tests.Processing.UnitTests
             MockHumidityHandler.Received(1).CanHandle(humidityReading);
             MockHumidityHandler.Received(1).Handle(humidityReading);
             MockTemperatureHandler.DidNotReceive().Handle(Arg.Any<SensorReading>());
+            MockUnknownHandler.DidNotReceive().Handle(Arg.Any<SensorReading>());
         }
 
         [Test]

@@ -10,6 +10,11 @@ namespace IoTSensorReaderApp.Output
         public ConsoleOutputService(IEnumerable<ISensorFormatter> formatters)
         {
             _formatters = formatters ?? throw new ArgumentNullException(nameof(formatters));
+
+            if (!_formatters.Any()) 
+            {
+                throw new ArgumentException("At least one formatter must be provided.", nameof(formatters));
+            }
         }
         
         public Task WriteAsync(SensorReading reading)

@@ -4,29 +4,29 @@ using NSubstitute;
 namespace IoTSensorReaderApp.Tests.Sensors.UnitTests
 {
     [TestFixture]
-    public class TemperatureReadingHandlerTests : SensorTest
+    public class UnknownReadingHandlerTests : SensorTest
     {
-        private TemperatureReadingHandler _handler;
+        private UnknownSensorHandler _handler;
 
         [SetUp]
         public new void SetUp()
         {
             base.SetUp();
-            _handler = new TemperatureReadingHandler();
+            _handler = new UnknownSensorHandler();
         }
 
         [Test]
-        public void CanHandleTemperatureReadingReturnsTrue()
+        public void CanHandleUnknownReadingReturnsTrue()
         {
-            var temperatureReading = CreateTemperatureReading();
+            var unknownReading = CreateUnknownReading();
 
-            var result = _handler.CanHandle(temperatureReading);
+            var result = _handler.CanHandle(unknownReading);
 
             Assert.That(result, Is.True);
         }
 
         [Test]
-        public void CanHandleHumidityReadingReturnsFalse()
+        public void CanHandleHumidityReading_ReturnsFalse()
         {
             var humidityReading = CreateHumidityReading();
 
@@ -36,11 +36,11 @@ namespace IoTSensorReaderApp.Tests.Sensors.UnitTests
         }
 
         [Test]
-        public void CanHandleUnknownReadingReturnsFalse()
+        public void CanHandleTemperatureReading_ReturnsFalse()
         {
-            var unknownReading = CreateUnknownReading();
+            var temperatureReading = CreateTemperatureReading();
 
-            var result = _handler.CanHandle(unknownReading);
+            var result = _handler.CanHandle(temperatureReading);
 
             Assert.That(result, Is.False);
         }

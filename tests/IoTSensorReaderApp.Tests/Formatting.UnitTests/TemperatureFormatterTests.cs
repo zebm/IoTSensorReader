@@ -16,6 +16,36 @@ namespace IoTSensorReaderApp.Tests.Formatting.UnitTests
         }
 
         [Test]
+        public void CanFormatTemperatureReadingReturnsTrue()
+        {
+            var reading = CreateTemperatureReading(25.0);
+
+            var result = _formatter.CanFormat(reading);
+
+            Assert.That(result, Is.True);
+        }
+
+        [Test]
+        public void CanFormatReturnsFalseForHumidityReading()
+        {
+            var reading = CreateHumidityReading(55.0);
+
+            var result = _formatter.CanFormat(reading);
+
+            Assert.That(result, Is.False);
+        }
+
+        [Test]
+        public void CanFormatReturnsFalseForUnknownReading()
+        {
+            var reading = CreateUnknownReading();
+
+            var result = _formatter.CanFormat(reading);
+
+            Assert.That(result, Is.False);
+        }
+
+        [Test]
         public void FormatWithTemperatureReadingReturnsCorrectFormat()
         {
             var reading = CreateTemperatureReading(22.5);

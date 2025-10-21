@@ -7,7 +7,7 @@ namespace IoTSensorReaderApp.Sensors
     {
         public bool CanHandle(SensorReading reading)
         {
-            return true;
+            return reading.Type == SensorType.Unknown;
         }
 
         public void Handle(SensorReading reading)

@@ -11,8 +11,13 @@ namespace IoTSensorReaderApp.Processing
 
         public SensorMessageProcessor(IEnumerable<ISensorReadingHandler> handlers, IOutputService output)
         {
-            _handlers = handlers;
-            _output = output;
+            _handlers = handlers ?? throw new ArgumentNullException(nameof(handlers));
+            _output = output ?? throw new ArgumentNullException(nameof(output));
+            
+            if (!_handlers.Any())
+            {
+                throw new ArgumentException("At least one handler must be provided.", nameof(handlers));
+            }
         }
 
         public async Task ProcessMessageAsync(SensorReading reading)

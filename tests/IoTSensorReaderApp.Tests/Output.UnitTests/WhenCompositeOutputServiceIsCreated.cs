@@ -30,5 +30,13 @@ namespace IoTSensorReaderApp.Tests.Output.UnitTests
 
             Assert.DoesNotThrow(() => new CompositeOutputService(services));
         }
+
+        [Test]
+        public void ThenThrowsExceptionIfServicesIsEmpty()
+        {
+            var emptyServices = new List<IOutputService>();
+
+            Assert.Throws<ArgumentException>(() => new CompositeOutputService(emptyServices));
+        }
     }
 }

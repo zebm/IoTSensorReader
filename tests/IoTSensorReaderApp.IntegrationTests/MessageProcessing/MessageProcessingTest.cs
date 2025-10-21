@@ -24,15 +24,17 @@ namespace IoTSensorReaderApp.IntegrationTests.MessageProcessing
             var formatters = new List<ISensorFormatter>
             {
                 new TemperatureFormatter(),
-                new HumidityFormatter()
+                new HumidityFormatter(),
+                new UnknownSensorFormatter()
             };        
 
             ConsoleService = new ConsoleOutputService(formatters);
             
             var tempHandler = new TemperatureReadingHandler();
             var humidityHandler = new HumidityReadingHandler();
-            
-            Handlers = new List<ISensorReadingHandler> { tempHandler, humidityHandler };
+            var unknownHandler = new UnknownSensorHandler();
+
+            Handlers = new List<ISensorReadingHandler> { tempHandler, humidityHandler, unknownHandler };
             Processor = new SensorMessageProcessor(Handlers, ConsoleService);
         }
 
@@ -53,6 +55,17 @@ namespace IoTSensorReaderApp.IntegrationTests.MessageProcessing
             {
                 SensorId = sensorId,
                 Type = SensorType.Humidity,
+                Value = value,
+                TimeStamp = DateTime.Parse("2025-10-17T10:30:00")
+            };
+        }
+
+        protected SensorReading CreateUnknownReading(int sensorId = 11111, double value = 0.0)
+        {
+            return new SensorReading
+            {
+                SensorId = sensorId,
+                Type = SensorType.Unknown,
                 Value = value,
                 TimeStamp = DateTime.Parse("2025-10-17T10:30:00")
             };
