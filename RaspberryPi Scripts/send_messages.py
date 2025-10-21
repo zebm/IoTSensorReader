@@ -17,6 +17,7 @@ messages = [
     {"SensorId": 123456, "Type" : 2, "Value": 29.98},
     {"SensorId": 123456, "Type" : 1, "Value": 22.6},
     {"SensorId": 123456, "Type" : 2, "Value": 30.1},
+    {"SensorId": 123456, "Type" : 5, "Value": 1013.25},  # Unknown sensor type
 ]
 
 for msg in messages:

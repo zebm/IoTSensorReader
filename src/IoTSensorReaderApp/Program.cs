@@ -15,7 +15,8 @@ class Program
         var formatters = new List<ISensorFormatter>
         {
             new TemperatureFormatter(),
-            new HumidityFormatter()
+            new HumidityFormatter(),
+            new UnknownSensorFormatter()
         };
 
         var jsonFormatter = new JsonSensorFormatter();
@@ -28,7 +29,8 @@ class Program
         var sensorHandlers = new List<ISensorReadingHandler>
         {
             new TemperatureReadingHandler(),
-            new HumidityReadingHandler()
+            new HumidityReadingHandler(),
+            new UnknownSensorHandler()
         };
 
         IMessageProcessor messageProcessor = new SensorMessageProcessor(sensorHandlers, compositeOutputService);

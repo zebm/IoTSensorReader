@@ -13,6 +13,6 @@ namespace IoTSensorReaderApp.Models
 
         public DateTime TimeStamp { get; set; }
 
-        public string RawMessage { get; set; }
+        public string? RawMessage { get; set; }
     }
 }

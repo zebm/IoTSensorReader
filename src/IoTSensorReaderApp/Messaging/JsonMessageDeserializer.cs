@@ -13,6 +13,11 @@ namespace IoTSensorReaderApp.Messaging
                 if (reading != null)
                 {
                     reading.RawMessage = messageBody;
+                    if (!Enum.IsDefined(typeof(SensorType), reading.Type))
+                    {
+                        Console.WriteLine($"Unknown sensor type {reading.Type}, setting to Unknown");
+                        reading.Type = SensorType.Unknown;
+                    }
                     return reading;
                 }
 

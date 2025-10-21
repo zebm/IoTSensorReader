@@ -18,7 +18,7 @@ namespace IoTSensorReaderApp.Tests.Messaging.UnitTests
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                new MessageCoordinator(null, MockProcessor, MockDeserializer);
+                new MessageCoordinator(null!, MockProcessor, MockDeserializer);
             });
         }
 
@@ -27,7 +27,7 @@ namespace IoTSensorReaderApp.Tests.Messaging.UnitTests
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                new MessageCoordinator(MockConsumer, null, MockDeserializer);
+                new MessageCoordinator(MockConsumer, null!, MockDeserializer);
             });
         }
 
@@ -36,7 +36,7 @@ namespace IoTSensorReaderApp.Tests.Messaging.UnitTests
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                new MessageCoordinator(MockConsumer, MockProcessor, null);
+                new MessageCoordinator(MockConsumer, MockProcessor, null!);
             });
         }
 
