@@ -72,7 +72,9 @@ For this example the IoT Device will send 2 messages - one of Temperature type a
 
 
 ### Step 5. MessageCoordinator Delegates
+
 **Component**: MessageCoordinator.cs
+
 **Action**:
 	- Consumes messages from EventHubConsumer
 	- Delegates conversion to JsonMessageDeserializer 
@@ -81,14 +83,19 @@ For this example the IoT Device will send 2 messages - one of Temperature type a
 
 **Dependencies:** IEventHubConsumer, IMessageDeserializer, IMessageProcessor
 
+
 ### Step 6. JsonMessageDeserializer Converts
+
 **Component**: JsonMessageDeserializer.cs
+
 **Action**:
 	- Takes raw Json message
 	- Deserializes Json message and returns a SensorReading Object
 
 ### Step. 7 SensorMessageProcessor Selects Strategy for each Message 
+
 **Component**: MessageProcessor.cs 
+
 **Action**:
 	- Selects appropriate Handler for SensorReading
 	- Delegates processing of each reading to Handler 
@@ -98,11 +105,14 @@ For this example the IoT Device will send 2 messages - one of Temperature type a
 **Dependencies:** List\<SensorHandler>, IOutputService 
 
 ### Step 8. Handlers Process Readings
-Note: This is currently "redundant code" but has been retained to demonstrate where the entry point for additional business logic, such as calculations, alerting etc, would be.
+
+**Note:** This is currently "redundant code" but has been retained to demonstrate where the entry point for additional business logic, such as calculations, alerting etc, would be.
 
 
 ### Step 9. CompositeOutputService Distributes
+
 **Component**: CompositeOutputService.cs
+
 **Action:** 
 - Receives SensorReading from MessageProcessor which treats it as a single outputservice
 - Distributes to all registered output services
@@ -111,7 +121,9 @@ Note: This is currently "redundant code" but has been retained to demonstrate wh
 **Dependencies:** a Collection of IOutputService
 
 ### Step 10a. ConsoleOutputService 
+
 **Component**: CompositeOutputService.cs
+
 **Action:** 
 - Recieves SensorReading
 - Selects the correct formatter based on ReadingType
@@ -130,7 +142,9 @@ Sensor 123456 | [Unknown Sensor Type] 20/10/2025 2:30:00 PM: 1013.25 (Raw: {"Sen
 **Dependencies:** a Collection of ISensorFormatter
 
 ### Step 10b. DbOutputService
+
 **Component**: CompositeOutputService.cs
+
 **Action:** 
 - Receives SensorReading
 - Delegates Formatting to JsonSensorFormatter
@@ -169,7 +183,7 @@ Sensor 123456 | [Unknown Sensor Type] 20/10/2025 2:30:00 PM: 1013.25 (Raw: {"Sen
 **Dependencies:** a Collection of ISensorFormatter
 
 
-### Example of Application Running
+## Example of Application Running
 
 The following is a brief, high level, example of the application running to demonstrate outputs. 
 Assuming that the following setup has been completed:
@@ -185,7 +199,7 @@ And the device connection string added to the raspberry pi env variables for the
 ![picture](readmepictures/iothub_device_string.png)
 
 **Step 1. Build the .Net Application** 
-![picture](readmepictures/build_app.png)
+![picture](readmepictures/buildapp.png)
 
 **Step 2. Run the .Net Application** 
 ![picture](readmepictures/runapp.png)
@@ -195,10 +209,12 @@ And the device connection string added to the raspberry pi env variables for the
 
 **Results** 
 **Console Output:** 
-![picture](readmepictures/console-output.png)
+![picture](readmepictures/app_console_output.png)
 **MongoDB documents:** 
 ![picture](readmepictures/mongodb_documents.png)
-## Testing 
+
+
+# Testing 
 
 This project utilized the following testing types
 - Unit testing
